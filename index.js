@@ -1,4 +1,14 @@
 const canvas = document.querySelector('canvas')
+const a1 = document.querySelector('.a-1')
+const j1 = document.querySelector('.j-1')
+const l1 = document.querySelector('.l-1')
+const r1 = document.querySelector('.r-1')
+
+const a2 = document.querySelector('.a-2')
+const j2 = document.querySelector('.j-2')
+const l2 = document.querySelector('.l-2')
+const r2 = document.querySelector('.r-2')
+
 const c = canvas.getContext('2d')
 
 canvas.width = 1024
@@ -328,5 +338,109 @@ window.addEventListener('keyup', (event) => {
     case 'ArrowLeft':
       keys.ArrowLeft.pressed = false
       break
+  }
+})
+
+a1.addEventListener('click', () => {
+  player.attack()
+})
+
+let isRunning = false
+
+r1.addEventListener('mousedown', () => {
+  isRunning = true // Kullanıcı butona bastığında koşu başlar
+  runRight() // Koşu fonksiyonunu çağır
+})
+
+r1.addEventListener('mouseup', () => {
+  isRunning = false
+  player.velocity.x = 0
+  player.switchSprite('idle')
+})
+l1.addEventListener('mousedown', () => {
+  isRunning = true // Kullanıcı butona bastığında koşu başlar
+  runLeft() // Koşu fonksiyonunu çağır
+})
+
+l1.addEventListener('mouseup', () => {
+  isRunning = false
+  player.velocity.x = 0
+  player.switchSprite('idle')
+})
+
+function runRight() {
+  if (isRunning) {
+    // Eğer koşu durumu aktifse
+    player.velocity.x = 5 // Karakterin hızını ayarla
+    player.switchSprite('run') // Koşu animasyonunu başlat
+    requestAnimationFrame(runRight) // Animasyonu tekrarla
+  }
+}
+function runLeft() {
+  if (isRunning) {
+    player.velocity.x = -5 // Karakterin hızını ayarla
+    player.switchSprite('run') // Koşu animasyonunu başlat
+    requestAnimationFrame(runLeft) // Animasyonu tekrarla
+  }
+}
+
+j1.addEventListener('click', () => {
+  if (!player.dead && player.velocity.y === 0) {
+    // Simple ground check to prevent mid-air jumps
+    player.velocity.y = -20 // Initiate jump
+    player.switchSprite('jump')
+  }
+})
+
+//? ENEMY BUTTONS
+
+let isRunning2 = false
+
+function runRight2() {
+  if (isRunning2) {
+    // Eğer koşu durumu aktifse
+    enemy.velocity.x = 5 // Karakterin hızını ayarla
+    enemy.switchSprite('run') // Koşu animasyonunu başlat
+    requestAnimationFrame(runRight2) // Animasyonu tekrarla
+  }
+}
+function runLeft2() {
+  if (isRunning2) {
+    enemy.velocity.x = -5 // Karakterin hızını ayarla
+    enemy.switchSprite('run') // Koşu animasyonunu başlat
+    requestAnimationFrame(runLeft2) // Animasyonu tekrarla
+  }
+}
+
+a2.addEventListener('click', () => {
+  enemy.attack()
+})
+
+r2.addEventListener('mousedown', () => {
+  isRunning2 = true // Kullanıcı butona bastığında koşu başlar
+  runRight2() // Koşu fonksiyonunu çağır
+})
+
+r2.addEventListener('mouseup', () => {
+  isRunning2 = false
+  enemy.velocity.x = 0
+  enemy.switchSprite('idle')
+})
+l2.addEventListener('mousedown', () => {
+  isRunning2 = true // Kullanıcı butona bastığında koşu başlar
+  runLeft2() // Koşu fonksiyonunu çağır
+})
+
+l2.addEventListener('mouseup', () => {
+  isRunning2 = false
+  enemy.velocity.x = 0
+  enemy.switchSprite('idle')
+})
+
+j2.addEventListener('click', () => {
+  if (!enemy.dead && enemy.velocity.y === 0) {
+    // Simple ground check to prevent mid-air jumps
+    enemy.velocity.y = -20 // Initiate jump
+    enemy.switchSprite('jump')
   }
 })
